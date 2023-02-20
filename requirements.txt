@@ -1,3 +1,4 @@
 streamlit
 google-cloud-firestore
 protobuf~=3.19.0
+pandas
