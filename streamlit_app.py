@@ -49,13 +49,13 @@ if __name__ == "__main__":
             name = st.text_input("Name")
             valid_time = st.number_input("Valid time")
             # time = datetime.datetime.now()
-            utcmoment_naive = datetime.datetime.utcnow()
-            utcmoment = utcmoment_naive.replace(tzinfo=pytz.utc)
-            localDatetime = utcmoment.astimezone(pytz.timezone("Europe/Berlin"))
-
-            ID = name + " " + str(localDatetime)
+            # utcmoment_naive = datetime.datetime.utcnow()
+            # utcmoment = utcmoment_naive.replace(tzinfo=pytz.utc)
+            # localDatetime = utcmoment.astimezone(pytz.timezone("Europe/Berlin"))
+            time = datetime.datetime.now(pytz.timezone("Europe/Berlin"))
+            ID = name + " " + str(time)
             data_to_add = {"name": name,
-                           "date": localDatetime,
+                           "date": time,
                            "valid time": valid_time}
             submitted = st.form_submit_button("Submit")
             if submitted:
