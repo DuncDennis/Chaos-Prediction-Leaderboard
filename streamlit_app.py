@@ -5,6 +5,7 @@ from google.oauth2 import service_account
 import json
 import pandas as pd
 import datetime
+import pytz
 
 @st.cache_resource
 def connect_to_db():
@@ -48,6 +49,9 @@ if __name__ == "__main__":
             name = st.text_input("Name")
             valid_time = st.number_input("Valid time")
             time = datetime.datetime.now()
+            utcmoment_naive = datetime.datetime.utcnow()
+            utcmoment = utcmoment_naive.replace(tzinfo=pytz.utc)
+            localDatetime = utcmoment.astimezone(pytz.timezone("Europe/Paris"))
 
             ID = name + " " + str(time)
             data_to_add = {"name": name,
@@ -64,16 +68,7 @@ if __name__ == "__main__":
                 # Clear cache to reload Leaderboard:
                 clear_cache_data()
 
-
-    # show leaderboard:
-    # results_ref = db.collection(LEADERBOARD_STR)  # Creates "1x write"
-    # docs = results_ref.stream()  # Does not read data yet
-    # items = list(map(lambda x: x.to_dict(), docs))
-    # df = pd.DataFrame(items)
-    # df = df[["name", "date", "valid time"]]
-    # # df["date"] = df["date"].dt.strftime("%Y-%m-%d %H:%M:%S")
-    # df["date"] = df["date"].dt.strftime("%d-%m-%Y %H:%M")
-    # df.sort_values(by="valid time", inplace=True)
+    # Show leaderboard
     df = read_leaderboard()
 
     st.header("Leaderboard")
@@ -81,5 +76,16 @@ if __name__ == "__main__":
         clear_cache_data()
     st.dataframe(df)
 
+# st.button("test")
+# utcmoment_naive = datetime.datetime.utcnow()
+# utcmoment = utcmoment_naive.replace(tzinfo=pytz.utc)
+# localDatetime = utcmoment.astimezone(pytz.timezone("Europe/Paris"))
+# strtime = localDatetime.strftime("%Y-%m-%d %H:%M:%S")
+# st.write(strtime)
+# print(strtime)
 
-
+# utc_now = pytz.utc.localize(datetime.datetime.utcnow())
+# print(utc_now)
+# pst_now = utc_now.astimezone(pytz.timezone("Paris"))
+# print(pst_now)
+# print(time.tzinfo)
