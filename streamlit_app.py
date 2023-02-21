@@ -30,6 +30,7 @@ def read_leaderboard():
     items = list(map(lambda x: x.to_dict(), docs))
     df = pd.DataFrame(items)
     df = df[["name", "date", "valid time"]]
+    df["date"] = df["date"].dt.tz_convert("Europe/Berlin")
     df["date"] = df["date"].dt.strftime("%d-%m-%Y %H:%M")
     df.sort_values(by="valid time", inplace=True)
     return df
