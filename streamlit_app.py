@@ -4,6 +4,7 @@ from google.cloud import firestore
 from google.oauth2 import service_account
 import json
 import pandas as pd
+import numpy as np
 import datetime
 import pytz
 
@@ -45,14 +46,26 @@ if __name__ == "__main__":
 
     # Add entry:
     with st.sidebar:
+
+        st.header("Upload data")
+        true_data = st.file_uploader("True",
+                                     type=["npy"],
+                                     accept_multiple_files=False)
+        if true_data is not None:
+            true_data = np.load(true_data)
+
+        pred_data = st.file_uploader("Prediction",
+                                     type=["npy"],
+                                     accept_multiple_files=False)
+        if pred_data is not None:
+            pred_data = np.load(pred_data)
+        if pred_data is not None and true_data is not None:
+            st.success("Data uploaded succesfully.")
+
         st.header("Add entry:")
         with st.form(key="entry"):
             name = st.text_input("Name")
             valid_time = st.number_input("Valid time")
-            # time = datetime.datetime.now()
-            # utcmoment_naive = datetime.datetime.utcnow()
-            # utcmoment = utcmoment_naive.replace(tzinfo=pytz.utc)
-            # localDatetime = utcmoment.astimezone(pytz.timezone("Europe/Berlin"))
             time = datetime.datetime.now(pytz.timezone("Europe/Berlin"))
             ID = name + " " + str(time)
             data_to_add = {"name": name,
@@ -76,17 +89,3 @@ if __name__ == "__main__":
     if st.button("🔄"):
         clear_cache_data()
     st.dataframe(df)
-
-# st.button("test")
-# utcmoment_naive = datetime.datetime.utcnow()
-# utcmoment = utcmoment_naive.replace(tzinfo=pytz.utc)
-# localDatetime = utcmoment.astimezone(pytz.timezone("Europe/Paris"))
-# strtime = localDatetime.strftime("%Y-%m-%d %H:%M:%S")
-# st.write(strtime)
-# print(strtime)
-
-# utc_now = pytz.utc.localize(datetime.datetime.utcnow())
-# print(utc_now)
-# pst_now = utc_now.astimezone(pytz.timezone("Paris"))
-# print(pst_now)
-# print(time.tzinfo)
