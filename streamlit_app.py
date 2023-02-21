@@ -47,6 +47,7 @@ if __name__ == "__main__":
     # Add entry:
     with st.sidebar:
 
+        # Data upload:
         st.header("Upload data")
         true_data = st.file_uploader("True",
                                      type=["npy"],
@@ -60,8 +61,9 @@ if __name__ == "__main__":
         if pred_data is not None:
             pred_data = np.load(pred_data)
         if pred_data is not None and true_data is not None:
-            st.success("Data uploaded succesfully.")
+            st.success("True and Pred data uploaded successfully.")
 
+        # Add entry:
         st.header("Add entry:")
         with st.form(key="entry"):
             name = st.text_input("Name")
